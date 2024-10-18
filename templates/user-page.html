@@ -1,0 +1,44 @@
+{% include "header.html" %}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/index.jpg') }}')">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading">
+          <h1 class="mx-auto text-nowrap">User info</h1>
+          <span class="subheading">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+
+      <!-- New Post -->
+      <div class="d-flex">
+        <div class="post-preview d-flex flex-column p-2">
+          <h2 class="post-title">
+            {{ user.name }} {{ user.lastname }}
+            {% if user.id == 1 %}
+            <em>[Admin]</em>
+            {% endif %}
+          </h2>
+          <h3 class="post-subtitle">
+            Registered: {{ user.reg_date }}
+          </h3>
+        </div>
+      </div>
+      <hr>
+
+    </div>
+  </div>
+</div>
+<hr>
+
+{% include "footer.html" %}

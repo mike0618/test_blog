@@ -1,0 +1,61 @@
+{% include "header.html" %}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/index.jpg') }}')">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading">
+          <h1 class="mx-auto text-nowrap">Test Blog</h1>
+          <span class="subheading">Flask SQLAlchemy Practice</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-md-12 mx-auto">
+
+      <!-- New Post -->
+      {% if current_user.is_authenticated %}
+      <div class="clearfix">
+        <a class="btn btn-outline-dark btn-block" href="{{ url_for('add_new_post') }}">Create a new
+          post</a>
+      </div>
+      <hr>
+      {% endif %}
+
+      {% for post in all_posts %}
+      <div class="d-md-flex ">
+        <div class="post-preview d-flex flex-column">
+          <a href="{{ url_for('show_post', post_id=post.id) }}">
+            <h2 class="post-title mt-0">
+              {{ post.title }}
+            </h2>
+          </a>
+          <span class="post-meta mt-auto">Published by
+            <a href="{{ url_for('view_user', uid=post.author_id) }}">{{ post.author.name }} {{ post.author.lastname
+              }}</a>
+            {{ post.date }} Comments - {{ post.comments | length }}<br>
+
+            {% if current_user.is_authenticated and (current_user.id == 1 or current_user.id == post.author_id) %}
+            <a class="text-success" href="{{ url_for('edit_post', post_id=post.id) }}">🖉 Edit this
+              post</a>
+            <a class="text-danger" href="{{ url_for('delete_post', post_id=post.id) }}">✘ Delete this
+              post</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+      <hr>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+<hr>
+
+{% include "footer.html" %}

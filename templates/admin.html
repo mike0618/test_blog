@@ -1,0 +1,40 @@
+{% include "header.html" %}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/admin-bg.jpg') }}')">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading">
+          <h1 class="mx-auto">ADMIN PAGE</h1>
+          <span class="subheading">Admin page
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <!--<h4>The number of visitors from the past 30 days: <span style="color: Cyan">{{ visitors }}</span></h4>-->
+      <h4>Users - {{ all_users | length }}</h4>
+      <hr>
+      {% for user in all_users %}
+      <div class="post-preview">
+        <h3 class="post-subtitle font-weight-light">
+          <a class="text-decoration-none" href="{{ url_for('edit_user', user_id=user.id) }}">
+            {{ user.name }}: {{ user.name }} {{ user.lastname }}, {{ user.reg_date }}
+          </a>
+        </h3>
+      </div>
+      <hr>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<hr>
+
+{% include "footer.html" %}

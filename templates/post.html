@@ -1,0 +1,76 @@
+{% include "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!-- Page Header -->
+{% if post.img_url %}
+<header class="masthead" style="background-image: url('{{ post.img_url }}')">
+  {% else %}
+  <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/index.jpg')}}')">
+    {% endif %}
+    <!-- <div class="overlay"></div> -->
+    <div class="container position-relative px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <div class="post-heading">
+            <h1>{{ post.title }}</h1>
+            <h2 class="subheading">{{ post.subtitle }}</h2>
+            <span class="meta">Published by
+              <a href="{{ url_for('view_user', uid=post.author_id) }}">{{ post.author.name }} {{ post.author.lastname
+                }}</a>
+              {{ post.date }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {{ post.content|safe }}
+          <hr>
+          {% if current_user.is_authenticated and (current_user.id == 1 or current_user.id == post.author_id) %}
+          <div class="clearfix">
+            <a class="btn btn-primary float-right" href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
+          </div>
+          {% endif %}
+
+          {{ ckeditor.load(pkg_type='basic') }}
+          {{ ckeditor.config(name='text') }}
+          {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "outline-dark"}) }}
+
+          <!--           Comments Area -->
+          <hr>
+          <div class="page-header">
+            <h4>Comments - {{ post.comments | length }}</h4>
+          </div>
+          <div class="commentBox">
+            {% for comment in post.comments %}
+            <div class="media comment">
+              <div class="media-body ml-2">
+                <div class="user_name"> {{ comment.author.name }} {{ comment.author.lastname }}<br>
+                  <span class="text-secondary">{{ comment.date }}</span>
+                </div>
+                <p class="commentText">{{ comment.content | safe }}
+                  {% if current_user.is_authenticated and (current_user.id == 1 or current_user.id ==
+                  comment.author_id) %}
+                  <a class="text-danger"
+                    href="{{ url_for('delete_comment', post_id=post.id, comment_id=comment.id) }}">✘
+                    Delete</a>
+                  {% endif %}
+
+                </p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+
+  {% include "footer.html" %}

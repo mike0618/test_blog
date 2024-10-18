@@ -1,0 +1,41 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+{% include "header.html" %}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/personal.jpg') }}')">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading">
+          <h1 class="mx-auto">Hello {{ current_user.name }} {{ current_user.lastname }}!</h1>
+          <span class="subheading">{{ current_user.username }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="flashes content">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+      <h4>User ID: {{ current_user.id }}. Register date: {{ current_user.reg_date }}</h4>
+      <p>Username: {{ current_user.username }}</p>
+      <p>Name: {{ current_user.name }}</p>
+      <p>Lastname: {{ current_user.lastname }}</p>
+      <div class="clearfix">
+        <a class="btn btn-outline-dark btn-block" href="{{ url_for('edit_personal') }}">Edit</a>
+      </div>
+
+
+      {% include "footer.html" %}
