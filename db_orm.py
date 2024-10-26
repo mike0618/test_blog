@@ -12,6 +12,9 @@ from secrets import token_hex
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_login import UserMixin
+import matplotlib.pyplot as plt
+import matplotlib.image as mpi
+from eralchemy import render_er
 
 app = Flask("Test_blog")  # create the app
 app.secret_key = token_hex()  # a random session secret key
@@ -77,3 +80,8 @@ if __name__ == "__main__":
         # CREATE TABLE IF NOT EXISTS Table ();
         db.create_all()  # create the db file and all tables
         print("The DB file and tables have been created.")
+        img = "model.png"
+        render_er(db.metadata, img)
+        plot = plt.imshow(mpi.imread(img))
+        plt.rcParams["figure.figsize"] = (16, 10)
+        plt.show()
